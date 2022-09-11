@@ -12,9 +12,17 @@ canvas.height = ty;
 var mousex = 0;
 var mousey = 0;
 
-addEventListener("mousemove", function() {
+var clickx = 1000;
+var clicky = 1000;
+
+addEventListener("mousemove", function(event) {
   mousex = event.clientX;
   mousey = event.clientY;
+});
+
+addEventListener("click", function(event) {
+  clickx = event.clientX;
+  clicky = event.clientY;
 });
 
 
@@ -78,18 +86,12 @@ function animate() {
     if(bal[i].x + bal[i].radius > tx || bal[i].x - bal[i].radius < 0){
         bal[i].dx = -bal[i].dx;
     }
-    if(mousex > bal[i].x - 20 && 
-      mousex < bal[i].x + 20 &&
-      mousey > bal[i].y -50 &&
-      mousey < bal[i].y +50 &&
-      bal[i].radius < 70){
-        //bal[i].x += +1;
-        bal[i].radius +=5; 
-      } else {
-        if(bal[i].radius > bal[i].startradius){
-          bal[i].radius += -5;
-        }
-      }
+   if( clickx > bal[i].x - 20 && 
+          clickx < bal[i].x + 20 &&
+          clicky > bal[i].y -50 &&
+          clicky < bal[i].y +50 ){
+           bal.splice(i,1);
+          }
       
     //forloop end
     }
@@ -97,8 +99,3 @@ function animate() {
 }
 
 animate();
-
-// setInterval(function() {
-//   bal.push(new Ball());
-//   bal.splice(0, 1);
-// }, 400);

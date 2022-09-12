@@ -27,6 +27,7 @@ addEventListener("click", function(event) {
 
 
 var grav = 0.99;
+var speedLimit = 5;
 c.strokeWidth=5;
 function randomColor() {
   return (
@@ -69,8 +70,8 @@ bal[bal.length-1].x = tx / 2;
 bal[bal.length-1].y = ty / 2;
 bal[bal.length-1].dy = Math.random() * 2;
 bal[bal.length-1].dx = Math.round((Math.random() - 0.5) * 10);
-bal[bal.length-1].vel = Math.random() /5;
-bal[bal.length-1].radius = ty/3;
+bal[bal.length-1].vel = Math.random() / 5;
+bal[bal.length-1].radius = ty /3;
 
 
 function animate() {    
@@ -88,7 +89,9 @@ function animate() {
     bal[i].x += bal[i].dx;
     if (bal[i].y + bal[i].radius >= ty) {
       bal[i].dy = -bal[i].dy * grav;
-    } else {
+    }else if(bal[i].y - bal[i].radius < 0){
+      bal[i].dy = -bal[i].dy    } 
+    else {
       bal[i].dy += bal[i].vel;
     }    
     if(bal[i].x + bal[i].radius > tx || bal[i].x - bal[i].radius < 0){
@@ -105,8 +108,30 @@ function animate() {
            bal[bal.length-1].x = bal[i].x ;
            bal[bal.length-2].y = bal[i].y ;
            bal[bal.length-1].y = bal[i].y ;
-           bal[bal.length-2].dx = bal[i].dx ;
-           bal[bal.length-1].dy = bal[i].dy ;
+           bal[bal.length-1].dx = bal[i].dx
+           bal[bal.length-1].dy = -bal[i].dy
+           bal[bal.length-2].dx = -bal[i].dx
+           bal[bal.length-2].dy = bal[i].dy
+           if(Math.abs(bal[bal.length-2].dx) <= speedLimit){
+            bal[bal.length-2].dx = -bal[i].dx * 2 ;
+           }else{
+            bal[bal.length-2].dx = -bal[i].dx 
+           }
+           if(Math.abs(bal[bal.length-1].dx) <= speedLimit){
+            bal[bal.length-1].dx = bal[i].dx * 2 ;
+           }else{
+            bal[bal.length-1].dx = bal[i].dx 
+           }
+           if(Math.abs(bal[bal.length-1].dy) <= speedLimit){
+            bal[bal.length-1].dy = -bal[i].dy * 2 ;
+           }else{
+            bal[bal.length-1].dy = -bal[i].dy 
+           }
+           if(Math.abs(bal[bal.length-2].dy) <= speedLimit){
+            bal[bal.length-2].dy = bal[i].dy * 2 ;
+           }else{
+            bal[bal.length-2].dy = bal[i].dy 
+           }
            bal[bal.length-2].vel = bal[i].vel
            bal[bal.length-1].vel = bal[i].vel
           //  bal[bal.length-2].color = bal[i].color

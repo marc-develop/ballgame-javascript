@@ -45,7 +45,6 @@ function randomColor() {
 function Ball() {
   this.color = randomColor();
   this.radius = Math.random() * 20 + 14;
-  this.startradius = this.radius;
   this.x = Math.random() * (tx - this.radius * 2) + this.radius;
   this.y = Math.random() * (ty - this.radius);
   this.dy = Math.random() * 2;
@@ -61,9 +60,18 @@ function Ball() {
 }
 
 var bal = [];
-for (var i=0; i<50; i++){
-    bal.push(new Ball());
-}
+// for (var i=0; i<50; i++){
+//     bal.push(new Ball());
+// }
+
+bal.push(new Ball());
+bal[bal.length-1].x = tx / 2;
+bal[bal.length-1].y = ty / 2;
+bal[bal.length-1].dy = Math.random() * 2;
+bal[bal.length-1].dx = Math.round((Math.random() - 0.5) * 10);
+bal[bal.length-1].vel = Math.random() /5;
+bal[bal.length-1].radius = ty/3;
+
 
 function animate() {    
   if (tx != window.innerWidth || ty != window.innerHeight) {
@@ -86,11 +94,26 @@ function animate() {
     if(bal[i].x + bal[i].radius > tx || bal[i].x - bal[i].radius < 0){
         bal[i].dx = -bal[i].dx;
     }
-   if( clickx > bal[i].x - 20 && 
-          clickx < bal[i].x + 20 &&
-          clicky > bal[i].y -50 &&
-          clicky < bal[i].y +50 ){
+   if( clickx > bal[i].x - bal[i].radius && 
+          clickx < bal[i].x + bal[i].radius &&
+          clicky > bal[i].y - bal[i].radius &&
+          clicky < bal[i].y + bal[i].radius ){
+           bal.push(new Ball(), new Ball());
+           bal[bal.length-2].radius = bal[i].radius / 2;
+           bal[bal.length-1].radius = bal[i].radius / 2;
+           bal[bal.length-2].x = bal[i].x ;
+           bal[bal.length-1].x = bal[i].x ;
+           bal[bal.length-2].y = bal[i].y ;
+           bal[bal.length-1].y = bal[i].y ;
+           bal[bal.length-2].dx = bal[i].dx ;
+           bal[bal.length-1].dy = bal[i].dy ;
+           bal[bal.length-2].vel = bal[i].vel
+           bal[bal.length-1].vel = bal[i].vel
+          //  bal[bal.length-2].color = bal[i].color
+          //  bal[bal.length-1].color = bal[i].color
            bal.splice(i,1);
+           clickx = 0;
+           clicky = 0;
           }
       
     //forloop end

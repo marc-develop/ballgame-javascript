@@ -15,20 +15,31 @@ var mousey = 0;
 var clickx = 1000;
 var clicky = 1000;
 
-addEventListener("mousemove", function(event) {
+addEventListener("mousemove", function (event) {
   mousex = event.clientX;
   mousey = event.clientY;
 });
 
-addEventListener("click", function(event) {
+addEventListener("click", function (event) {
   clickx = event.clientX;
   clicky = event.clientY;
 });
 
 
-var grav = 0.99;
+var grav = 2;
 var speedLimit = 5;
-c.strokeWidth=5;
+var minBallSize = 15;
+var numOfBalls = 50;
+var radiusReduceFactor = 0.5;
+var speedIncrFactor = 2;
+var numOfSplitBalls = 2;
+
+c.strokeWidth = 5;
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 function randomColor() {
   return (
     "rgba(" +
@@ -43,15 +54,68 @@ function randomColor() {
   );
 }
 
-function Ball() {
-  this.color = randomColor();
-  this.radius = Math.random() * 20 + 14;
-  this.x = Math.random() * (tx - this.radius * 2) + this.radius;
-  this.y = Math.random() * (ty - this.radius);
-  this.dy = Math.random() * 2;
-  this.dx = Math.round((Math.random() - 0.5) * 10);
-  this.vel = Math.random() /5;
-  this.update = function() {
+class Ball {
+
+  color;
+  radius;
+  x;
+  y;
+  dy;
+  dx;
+  vel;
+
+  constructor(color, radius, x, y, dy, dx, vel) {
+    this.color = color;
+    this.radius = radius;
+    this.x = x;
+    this.y = y;
+    this.dy = dy;
+    this.dx = dx;
+    this.vel = vel;
+  }
+
+  isHit(x, y) {
+    if (x > this.x - this.radius &&
+      x < this.x + this.radius &&
+      y > this.y - this.radius &&
+      y < this.y + this.radius) {
+      return true;
+    }
+    return false;
+  }
+
+  calculate() {
+    if( this.dy > speedLimit ) {
+      this.dy = speedLimit;
+    }
+    if( this.dy < -speedLimit ) {
+      this.dy = -speedLimit;
+    }
+    if( this.dx > speedLimit ) {
+      this.dx = speedLimit;
+    }
+    if( this.dx < -speedLimit ) {
+      this.dx = -speedLimit;
+    }
+    this.y += this.dy;
+    this.x += this.dx;
+    if (this.y + this.radius >= ty && this.dy > 0) {
+      this.dy = -this.dy * grav;
+    } else if (this.y - this.radius < 0 && this.dy < 0) {
+      this.dy = -this.dy
+    }
+    else {
+      this.dy += this.vel;
+    }
+    if (this.x + this.radius > tx || this.x - this.radius < 0) {
+      this.dx = -this.dx;
+    }
+  }
+
+  update() {
+    if ( this.radius < minBallSize ){
+      this.radius = minBallSize;
+    }
     c.beginPath();
     c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     c.fillStyle = this.color;
@@ -60,21 +124,46 @@ function Ball() {
   };
 }
 
+
+function getRandomBall() {
+  var color = randomColor();
+  var radius = Math.random() * 20 + 14;
+  var x = Math.random() * (tx - radius * 2) + radius;
+  var y = Math.random() * (ty - radius);
+  var dy = Math.random() * 2;
+  var dx = Math.round((Math.random() - 0.5) * 10);
+  var vel = Math.random() / 5;
+  return new Ball(color, radius, x, y, dy, dx, vel);
+}
+
+function getSplitBalls(parentBall, numOfNewBalls) {
+  var splitBalls = [];
+  var directionInd = 1;
+  for (let i = 0; i < numOfNewBalls; i++) {
+    if ( i % 2 == 0 ){
+      directionInd = 1
+    }else{
+      directionInd = -1
+    }
+    var color = randomColor();
+    var radius = parentBall.radius * radiusReduceFactor;
+    var x = parentBall.x + parentBall.radius * getRandomInt(0.5, 1) * directionInd ;
+    var y = parentBall.y + parentBall.radius * getRandomInt(0.5, 1) * directionInd ;
+    var dy = parentBall.dy * speedIncrFactor * getRandomInt(0.5 , 1) * directionInd ;
+    var dx = parentBall.dx * speedIncrFactor * getRandomInt(0.5 , 1) * directionInd ;
+    var vel = parentBall.vel;
+    splitBalls.push(new Ball(color, radius, x, y, dy, dx, vel));
+  }
+  return splitBalls;
+}
+
 var bal = [];
-// for (var i=0; i<50; i++){
-//     bal.push(new Ball());
-// }
-
-bal.push(new Ball());
-bal[bal.length-1].x = tx / 2;
-bal[bal.length-1].y = ty / 2;
-bal[bal.length-1].dy = Math.random() * 2;
-bal[bal.length-1].dx = Math.round((Math.random() - 0.5) * 10);
-bal[bal.length-1].vel = Math.random() / 5;
-bal[bal.length-1].radius = ty /3;
+for (var i = 0; i < numOfBalls; i++) {
+  bal.push(getRandomBall());
+}
 
 
-function animate() {    
+function animate() {
   if (tx != window.innerWidth || ty != window.innerHeight) {
     tx = window.innerWidth;
     ty = window.innerHeight;
@@ -85,65 +174,14 @@ function animate() {
   c.clearRect(0, 0, tx, ty);
   for (var i = 0; i < bal.length; i++) {
     bal[i].update();
-    bal[i].y += bal[i].dy;
-    bal[i].x += bal[i].dx;
-    if (bal[i].y + bal[i].radius >= ty) {
-      bal[i].dy = -bal[i].dy * grav;
-    }else if(bal[i].y - bal[i].radius < 0){
-      bal[i].dy = -bal[i].dy    } 
-    else {
-      bal[i].dy += bal[i].vel;
-    }    
-    if(bal[i].x + bal[i].radius > tx || bal[i].x - bal[i].radius < 0){
-        bal[i].dx = -bal[i].dx;
+    bal[i].calculate();
+    if ( bal[i].isHit(clickx, clicky) ) {
+      bal = bal.concat(getSplitBalls(bal[i], numOfSplitBalls));
+      bal.splice(i, 1);
+      clickx = 0;
+      clicky = 0;
     }
-   if( clickx > bal[i].x - bal[i].radius && 
-          clickx < bal[i].x + bal[i].radius &&
-          clicky > bal[i].y - bal[i].radius &&
-          clicky < bal[i].y + bal[i].radius ){
-           bal.push(new Ball(), new Ball());
-           bal[bal.length-2].radius = bal[i].radius / 2;
-           bal[bal.length-1].radius = bal[i].radius / 2;
-           bal[bal.length-2].x = bal[i].x ;
-           bal[bal.length-1].x = bal[i].x ;
-           bal[bal.length-2].y = bal[i].y ;
-           bal[bal.length-1].y = bal[i].y ;
-           bal[bal.length-1].dx = bal[i].dx
-           bal[bal.length-1].dy = -bal[i].dy
-           bal[bal.length-2].dx = -bal[i].dx
-           bal[bal.length-2].dy = bal[i].dy
-           if(Math.abs(bal[bal.length-2].dx) <= speedLimit){
-            bal[bal.length-2].dx = -bal[i].dx * 2 ;
-           }else{
-            bal[bal.length-2].dx = -bal[i].dx 
-           }
-           if(Math.abs(bal[bal.length-1].dx) <= speedLimit){
-            bal[bal.length-1].dx = bal[i].dx * 2 ;
-           }else{
-            bal[bal.length-1].dx = bal[i].dx 
-           }
-           if(Math.abs(bal[bal.length-1].dy) <= speedLimit){
-            bal[bal.length-1].dy = -bal[i].dy * 2 ;
-           }else{
-            bal[bal.length-1].dy = -bal[i].dy 
-           }
-           if(Math.abs(bal[bal.length-2].dy) <= speedLimit){
-            bal[bal.length-2].dy = bal[i].dy * 2 ;
-           }else{
-            bal[bal.length-2].dy = bal[i].dy 
-           }
-           bal[bal.length-2].vel = bal[i].vel
-           bal[bal.length-1].vel = bal[i].vel
-          //  bal[bal.length-2].color = bal[i].color
-          //  bal[bal.length-1].color = bal[i].color
-           bal.splice(i,1);
-           clickx = 0;
-           clicky = 0;
-          }
-      
-    //forloop end
-    }
-//animation end
+  }
 }
 
 animate();

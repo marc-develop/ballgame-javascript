@@ -55,7 +55,6 @@ function randomColor() {
 }
 
 class Ball {
-
   color;
   radius;
   x;
@@ -120,7 +119,7 @@ class Ball {
     c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     c.fillStyle = this.color;
     c.fill();
-    //c.stroke();
+    c.stroke();
   };
 }
 

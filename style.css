@@ -1,5 +1,37 @@
 body {
+    position: absolute;
     margin: 0px;
-    background-color: rgb(188, 209, 212);
     overflow: hidden;
 }
+
+.maincontainer {
+    position: relative;
+    top: 30vh; 
+    left: 20vw;
+    margin: auto;
+    width: 60vw;
+    height: 30vh;
+    border: 5px solid #FFFF00;
+    padding: 10px;
+
+}
+
+canvas {
+    position: absolute;
+    background-color: rgb(188, 209, 212);
+
+  }
+
+.bigheader {
+     
+    font-size:5vw;
+
+
+}
+
+.mainheader-container {
+
+    text-align: center;
+    width: 40w;
+    border: 5px solid #FFFF00;
+    }

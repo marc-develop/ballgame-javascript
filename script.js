@@ -8,12 +8,21 @@ canvas.width = tx;
 canvas.height = ty;
 //c.lineWidth= 5;
 //c.globalAlpha = 0.5;
+var grav = 2;
+var speedLimit = 5;
+var minBallSize = 15;
+var numOfBalls = 50;
+var radiusReduceFactor = 0.5;
+var speedIncrFactor = 2;
+var numOfSplitBalls = 2;
+
+c.strokeWidth = 5;
 
 var mousex = 0;
 var mousey = 0;
 
-var clickx = 1000;
-var clicky = 1000;
+var clickx = 0;
+var clicky = 0;
 
 addEventListener("mousemove", function (event) {
   mousex = event.clientX;
@@ -26,15 +35,6 @@ addEventListener("click", function (event) {
 });
 
 
-var grav = 2;
-var speedLimit = 5;
-var minBallSize = 15;
-var numOfBalls = 50;
-var radiusReduceFactor = 0.5;
-var speedIncrFactor = 2;
-var numOfSplitBalls = 2;
-
-c.strokeWidth = 5;
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -146,6 +146,10 @@ function getSplitBalls(parentBall, numOfNewBalls) {
     }
     var color = randomColor();
     var radius = parentBall.radius * radiusReduceFactor;
+    if ( radius < minBallSize ) {
+
+      radius = minBallSize;
+    }
     var x = parentBall.x + parentBall.radius * getRandomInt(0.5, 1) * directionInd ;
     var y = parentBall.y + parentBall.radius * getRandomInt(0.5, 1) * directionInd ;
     var dy = parentBall.dy * speedIncrFactor * getRandomInt(0.5 , 1) * directionInd ;
@@ -174,7 +178,7 @@ function animate() {
   for (var i = 0; i < bal.length; i++) {
     bal[i].update();
     bal[i].calculate();
-    if ( bal[i].isHit(clickx, clicky) ) {
+    if ( bal[i].isHit(clickx, clicky ) && bal[i].radius  ) {
       bal = bal.concat(getSplitBalls(bal[i], numOfSplitBalls));
       bal.splice(i, 1);
       clickx = 0;

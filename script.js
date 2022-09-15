@@ -178,7 +178,7 @@ function animate() {
   for (var i = 0; i < bal.length; i++) {
     bal[i].update();
     bal[i].calculate();
-    if ( bal[i].isHit(clickx, clicky ) && bal[i].radius  ) {
+    if ( bal[i].isHit(clickx, clicky ) && bal[i].radius >= minBallSize  ) {
       bal = bal.concat(getSplitBalls(bal[i], numOfSplitBalls));
       bal.splice(i, 1);
       clickx = 0;

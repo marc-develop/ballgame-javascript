@@ -1,37 +1,102 @@
-body {
-    position: absolute;
-    margin: 0px;
-    overflow: hidden;
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-.maincontainer {
-    position: relative;
-    top: 30vh; 
-    left: 20vw;
-    margin: auto;
-    width: 60vw;
-    height: 30vh;
-    border: 5px solid #FFFF00;
-    padding: 10px;
+/*Basic structure of slider*/
+.container{
+    width: 500px;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    overflow: hidden;
+    border: 10px solid #2f65a1;
+    border-radius: 8px;
+    box-shadow: -1px 5px 15px black;
+}
 
+/*Area of images*/
+.canvaswrapper{
+    width: 100%;
+    display: flex;
+    animation: slide 16s infinite;
+}
+
+#canvas{
+    width: 100%;
+}
+
+#messagecontainer{
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    height: 40%;
+    width: 40%;
+    border: 10px solid #1c1d1f;
+}
+
+#bigtextcontainer{
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    height: 40%;
+    width: 40%;
+    text-align: center;
+    border: 10px solid #1c1d1f;
+    /* transform: translate(-50 , -50); */
+
+
+}
+
+
+/* #screencontainer {
+    position:relative;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 5px solid #FFFF00;
+    overflow:hidden;
+}
+
+#canvascontainer{
+    position:absolute;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 5px solid #FFFF00;
+}
+
+.maincontainer{
+    position:absolute;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 5px solid #FFFF00;
 }
 
 canvas {
-    position: absolute;
-    background-color: rgb(188, 209, 212);
-
-  }
-
-.bigheader {
-     
-    font-size:5vw;
-
-
+    height: 100%;
+    width: 100%;
+    position:absolute;
+    border: 5px solid #FFFF00;
 }
 
 .mainheader-container {
-
-    text-align: center;
-    width: 40w;
+    position:absolute;
+    margin: 0;
+    padding: 0;
     border: 5px solid #FFFF00;
-    }
+}
+
+.bigheader {
+    position:absolute;
+    margin: 0;
+    padding: 0;
+    border: 5px solid #FFFF00;
+} */
+

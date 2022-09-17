@@ -10,8 +10,8 @@ canvas.height = ty;
 //c.globalAlpha = 0.5;
 var grav = 2;
 var speedLimit = 5;
-var minBallSize = 15;
-var numOfBalls = 50;
+var minBallSize = 20;
+var numOfBalls = 10;
 var radiusReduceFactor = 0.5;
 var speedIncrFactor = 2;
 var numOfSplitBalls = 2;
@@ -147,7 +147,6 @@ function getSplitBalls(parentBall, numOfNewBalls) {
     var color = randomColor();
     var radius = parentBall.radius * radiusReduceFactor;
     if ( radius < minBallSize ) {
-
       radius = minBallSize;
     }
     var x = parentBall.x + parentBall.radius * getRandomInt(0.5, 1) * directionInd ;
@@ -179,14 +178,23 @@ function animate() {
   for (var i = 0; i < bal.length; i++) {
     bal[i].update();
     bal[i].calculate();
-    if ( bal[i].isHit(clickx, clicky ) && bal[i].radius >= minBallSize  ) {
-      bal = bal.concat(getSplitBalls(bal[i], numOfSplitBalls));
-      bal.splice(i, 1);
-      clickx = 0;
-      clicky = 0;
-
-      displayMessage("You have popped em all!");
-      return;
+    if ( bal[i].isHit(clickx, clicky ) ) {
+      if( bal[i].radius ==  minBallSize ){
+        if(bal.length == 1){
+          displayMessage("You have popped em all Robin!");
+        }
+         bal.splice(i,1);
+      }   
+      else{
+        var newBalls = getSplitBalls(bal[i], numOfSplitBalls);
+        bal = bal.concat(newBalls);
+        if(bal.length == 1){
+          displayMessage("You have popped em all Robin!");
+        }
+         bal.splice(i,1);
+        clickx = 0;
+        clicky = 0;
+      }
     }
   }
 }

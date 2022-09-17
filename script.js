@@ -160,9 +160,10 @@ function getSplitBalls(parentBall, numOfNewBalls) {
   return splitBalls;
 }
 
-var bal = [];
-for (var i = 0; i < numOfBalls; i++) {
-  bal.push(getRandomBall());
+function displayMessage(message){
+ $("#bigtext").text(message) ;
+  $("#messagecontainer").fadeIn("slow");
+ 
 }
 
 
@@ -173,7 +174,7 @@ function animate() {
     canvas.width = tx;
     canvas.height = ty;
   }
-  requestAnimationFrame(animate);
+  var animationID = requestAnimationFrame(animate);
   c.clearRect(0, 0, tx, ty);
   for (var i = 0; i < bal.length; i++) {
     bal[i].update();
@@ -183,8 +184,19 @@ function animate() {
       bal.splice(i, 1);
       clickx = 0;
       clicky = 0;
+
+      displayMessage("You have popped em all!");
+      return;
     }
   }
 }
 
+var bal = [];
+for (var i = 0; i < numOfBalls; i++) {
+  bal.push(getRandomBall());
+}
+
+
+$(function(){
 animate();
+});

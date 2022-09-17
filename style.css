@@ -35,6 +35,7 @@
     height: 40%;
     width: 40%;
     border: 10px solid #1c1d1f;
+    display: none;
 }
 
 #bigtextcontainer{

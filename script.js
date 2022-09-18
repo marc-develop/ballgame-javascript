@@ -15,6 +15,8 @@ var numOfBalls = 50;
 var radiusReduceFactor = 0.5;
 var speedIncrFactor = 2;
 var numOfSplitBalls = 2;
+var numOfParticles = 50;
+var particlesRadius = 2;
 
 c.strokeWidth = 5;
 
@@ -62,8 +64,10 @@ class Ball {
   dy;
   dx;
   vel;
+  alpha;
+  alphaDecrease;
 
-  constructor(color, radius, x, y, dy, dx, vel) {
+  constructor(color, radius, x, y, dy, dx, vel, alphaDecrease) {
     this.color = color;
     this.radius = radius;
     this.x = x;
@@ -71,6 +75,8 @@ class Ball {
     this.dy = dy;
     this.dx = dx;
     this.vel = vel;
+    this.alpha = 1;
+    this.alphaDecrease = alphaDecrease;
   }
 
   isHit(x, y) {
@@ -109,17 +115,24 @@ class Ball {
     if (this.x + this.radius > tx || this.x - this.radius < 0) {
       this.dx = -this.dx;
     }
+    this.alpha -= this.alphaDecrease
   }
 
   update() {
-    if ( this.radius < minBallSize ){
+    if ( this.radius < minBallSize && this.alphaDecrease == 0){
       this.radius = minBallSize;
     }
+    c.save();
+    console.log(c.globalAlpha);
+    console.log(this.alphaDecrease);
+    console.log(this.alpha);
+    c.globalAlpha = this.alpha;
     c.beginPath();
     c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     c.fillStyle = this.color;
     c.fill();
     c.stroke();
+    c.restore();
   };
 }
 
@@ -132,10 +145,10 @@ function getRandomBall() {
   var dy = Math.random() * 2;
   var dx = Math.round((Math.random() - 0.5) * 10);
   var vel = Math.random() / 5;
-  return new Ball(color, radius, x, y, dy, dx, vel);
+  return new Ball(color, radius, x, y, dy, dx, vel, 0);
 }
 
-function getSplitBalls(parentBall, numOfNewBalls) {
+function getSplitBalls(parentBall, numOfNewBalls ) {
   var splitBalls = [];
   var directionInd = 1;
   for (let i = 0; i < numOfNewBalls; i++) {
@@ -154,9 +167,23 @@ function getSplitBalls(parentBall, numOfNewBalls) {
     var dy = parentBall.dy * speedIncrFactor * getRandomInt(0.5 , 1) * directionInd ;
     var dx = parentBall.dx * speedIncrFactor * getRandomInt(0.5 , 1) * directionInd ;
     var vel = parentBall.vel;
-    splitBalls.push(new Ball(color, radius, x, y, dy, dx, vel));
+    splitBalls.push(new Ball(color, radius, x, y, dy, dx, vel, 0));
   }
   return splitBalls;
+}
+
+function getParticles( x, y ) {
+  var particles = [];
+  for (let i = 0; i < numOfParticles; i++) {
+    
+    var color = randomColor();
+    var radius = particlesRadius;
+    let dx = (Math.random() - 0.5) * (Math.random() * 6);
+    let dy = (Math.random() - 0.5) * (Math.random() * 6);
+    var vel = Math.random() / 5;
+    particles.push(new Ball(color, radius, x, y, dy, dx, vel, 0.03));
+  }
+  return particles;
 }
 
 function displayMessage(message){
@@ -176,25 +203,27 @@ function animate() {
   var animationID = requestAnimationFrame(animate);
   c.clearRect(0, 0, tx, ty);
   for (var i = 0; i < bal.length; i++) {
-    bal[i].update();
+    if (bal[i].alpha <= 0) {
+      bal.splice(i, 1);
+  } else 
+      bal[i].update();
     bal[i].calculate();
-    if ( bal[i].isHit(clickx, clicky ) ) {
-      if( bal[i].radius ==  minBallSize ){
+    if ( bal[i].isHit(clickx, clicky) && bal[i].alphaDecrease == 0  ) {
+      if( bal[i].radius ==  minBallSize  ){
         if(bal.length == 1){
           displayMessage("You have popped em all!");
         }
+         var explosionParticles = getParticles( bal[i].x, bal[i].y );
+         bal = bal.concat(explosionParticles);
          bal.splice(i,1);
       }   
       else{
         var newBalls = getSplitBalls(bal[i], numOfSplitBalls);
         bal = bal.concat(newBalls);
-        if(bal.length == 1){
-          displayMessage("You have popped em all!");
-        }
-         bal.splice(i,1);
-        clickx = 0;
-        clicky = 0;
+        bal.splice(i,1);
       }
+      clickx = 0;
+      clicky = 0;
     }
   }
 }

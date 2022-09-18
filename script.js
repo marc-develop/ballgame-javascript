@@ -184,11 +184,20 @@ function getParticles( x, y ) {
 }
 
 function displayMessage(message){
- $("#bigtextcontainer").text(message) ;
-  $("#messagecontainer").fadeIn("slow");
-   $("#messagecontainer").css('display', 'flex');
-   $("#canvaswrapper").remove();
- 
+  
+  $("#canvaswrapper").remove();
+  $("#messagecontainer").fadeIn("slow" , function(){
+    $("#messagecontainer").css('display', 'flex');
+    $("#bigtextcontainer").text(message) ;
+  });
+
+}
+
+function displayForm() {
+  $("#bigtextcontainer").fadeOut("slow", function(){
+    $("#messagecontainer").append('<form action="/add-name" method="post" id="winnerform"><input type="text"></form>');
+  }) ;
+
 }
 
 
@@ -209,9 +218,6 @@ function animate() {
     bal[i].calculate();
     if ( bal[i].isHit(clickx, clicky) && bal[i].alphaDecrease == 0  ) {
       if( bal[i].radius ==  minBallSize  ){
-        if(bal.length == 1){
-          displayMessage("You have popped em all!");
-        }
          var explosionParticles = getParticles( bal[i].x, bal[i].y );
          bal = bal.concat(explosionParticles);
          bal.splice(i,1);
@@ -226,8 +232,9 @@ function animate() {
     }
   }
   if(bal.length == 0){
+    displayMessage("You have popped 'em all!");
     cancelAnimationFrame(animationID); 
-    displayForm();
+    setTimeout(displayForm(), 1000 );
 
   }
 }
@@ -242,7 +249,3 @@ $(function(){
 animate();
 });
 
-function displayForm() {
-  $("#bigtextcontainer").fadeOut("slow") ;
-  $("#messagecontainer").append('<form id="winnerform"><input type="text"></form>');
-}

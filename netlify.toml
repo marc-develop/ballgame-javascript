@@ -1,2 +1,7 @@
 [build]
      publish = ""
+
+[[ redirects ]]
+    from = 'add-name'
+    to = '/.netlify/functions/add-name'
+    status = 200

@@ -123,9 +123,6 @@ class Ball {
       this.radius = minBallSize;
     }
     c.save();
-    console.log(c.globalAlpha);
-    console.log(this.alphaDecrease);
-    console.log(this.alpha);
     c.globalAlpha = this.alpha;
     c.beginPath();
     c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -189,6 +186,8 @@ function getParticles( x, y ) {
 function displayMessage(message){
  $("#bigtextcontainer").text(message) ;
   $("#messagecontainer").fadeIn("slow");
+   $("#messagecontainer").css('display', 'flex');
+   $("#canvaswrapper").remove();
  
 }
 
@@ -205,7 +204,7 @@ function animate() {
   for (var i = 0; i < bal.length; i++) {
     if (bal[i].alpha <= 0) {
       bal.splice(i, 1);
-  } else 
+  } 
       bal[i].update();
     bal[i].calculate();
     if ( bal[i].isHit(clickx, clicky) && bal[i].alphaDecrease == 0  ) {
@@ -226,6 +225,11 @@ function animate() {
       clicky = 0;
     }
   }
+  if(bal.length == 0){
+    cancelAnimationFrame(animationID); 
+    displayForm();
+
+  }
 }
 
 var bal = [];
@@ -237,3 +241,8 @@ for (var i = 0; i < numOfBalls; i++) {
 $(function(){
 animate();
 });
+
+function displayForm() {
+  $("#bigtextcontainer").fadeOut("slow") ;
+  $("#messagecontainer").append('<form id="winnerform"><input type="text"></form>');
+}

@@ -4,7 +4,6 @@
     box-sizing: border-box;
 }
 
-/*Basic structure of slider*/
 .container{
     width: 500px;
     position: absolute;
@@ -17,7 +16,6 @@
     box-shadow: -1px 5px 15px black;
 }
 
-/*Area of images*/
 .canvaswrapper{
     width: 100%;
     display: flex;
@@ -35,7 +33,10 @@
     height: 40%;
     width: 40%;
     border: 10px solid #1c1d1f;
+    align-items:center;
+    justify-content:center;
     display: none;
+
 }
 
 #bigtextcontainer{
@@ -50,4 +51,12 @@
     justify-content:center;
     display: flex;
     /* transform: translate(-50 , -50); */
+}
+
+
+#winnerform{
+
+
+
+
 }

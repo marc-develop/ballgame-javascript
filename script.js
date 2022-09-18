@@ -11,7 +11,7 @@ canvas.height = ty;
 var grav = 2;
 var speedLimit = 10;
 var minBallSize = 20;
-var numOfBalls = 50;
+var numOfBalls = 1;
 var radiusReduceFactor = 0.5;
 var speedIncrFactor = 2;
 var numOfSplitBalls = 2;
@@ -187,7 +187,7 @@ function getParticles( x, y ) {
 }
 
 function displayMessage(message){
- $("#bigtext").text(message) ;
+ $("#bigtextcontainer").text(message) ;
   $("#messagecontainer").fadeIn("slow");
  
 }

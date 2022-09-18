@@ -9,9 +9,9 @@ canvas.height = ty;
 //c.lineWidth= 5;
 //c.globalAlpha = 0.5;
 var grav = 2;
-var speedLimit = 5;
+var speedLimit = 10;
 var minBallSize = 20;
-var numOfBalls = 10;
+var numOfBalls = 50;
 var radiusReduceFactor = 0.5;
 var speedIncrFactor = 2;
 var numOfSplitBalls = 2;
@@ -181,7 +181,7 @@ function animate() {
     if ( bal[i].isHit(clickx, clicky ) ) {
       if( bal[i].radius ==  minBallSize ){
         if(bal.length == 1){
-          displayMessage("You have popped em all Robin!");
+          displayMessage("You have popped em all!");
         }
          bal.splice(i,1);
       }   
@@ -189,7 +189,7 @@ function animate() {
         var newBalls = getSplitBalls(bal[i], numOfSplitBalls);
         bal = bal.concat(newBalls);
         if(bal.length == 1){
-          displayMessage("You have popped em all Robin!");
+          displayMessage("You have popped em all!");
         }
          bal.splice(i,1);
         clickx = 0;

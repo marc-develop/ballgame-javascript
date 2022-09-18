@@ -1,5 +1,6 @@
 console.log("Hello World");
 
+
 var canvas = document.getElementById("canvas");
 var c = canvas.getContext("2d");
 var tx = window.innerWidth;
@@ -195,7 +196,7 @@ function displayMessage(message){
 
 function displayForm() {
   $("#bigtextcontainer").fadeOut("slow", function(){
-    $("#messagecontainer").append('<form action="/add-name" method="post" id="winnerform"><input type="text"></form>');
+    $("#messagecontainer").append('<form action="/add-name" method="post" id="winnerform"><input name ="name" type="text"><input type="submit" value="Submit"></form>');
   }) ;
 
 }
@@ -234,7 +235,7 @@ function animate() {
   if(bal.length == 0){
     displayMessage("You have popped 'em all!");
     cancelAnimationFrame(animationID); 
-    setTimeout(displayForm(), 1000 );
+    setTimeout(displayForm, 2500);
 
   }
 }

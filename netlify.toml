@@ -1,7 +1,9 @@
 [build]
-     publish = ""
+     publish = "/"
 
 [[ redirects ]]
-    from = 'add-name'
-    to = '/.netlify/functions/add-name'
+    from = '/add-name'
+    to = '/.netlify/functions/handle-form'
     status = 200
+[functions]
+  node_bundler = "esbuild"

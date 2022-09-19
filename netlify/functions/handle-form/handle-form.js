@@ -1,5 +1,4 @@
 import { parse } from "querystring";
-import $ from 'jquery';
 
 export async function handler(event, context) {
   // Only allow POST
@@ -14,14 +13,9 @@ export async function handler(event, context) {
   console.log(params);
   const userName = { name }
 
-  var json = $.getJSON("https://api.ipify.org?format=jsonp&callback=?",
-      function(json) {
-        return json;
-      }
-    );
 
   return {
     statusCode: 200,
-    body: JSON.stringify(json),
+    body: JSON.stringify(userName),
   };
 }

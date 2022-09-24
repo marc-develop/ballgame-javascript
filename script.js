@@ -197,7 +197,14 @@ function displayMessage(message){
 
 function displayForm() {
   $("#bigtextcontainer").fadeOut("slow", function(){
-    $("#messagecontainer").append('<form action="/add-name" method="post" id="winnerform"><input name ="name" type="text"><input type="submit" value="Submit"></form>');
+    $("#messagecontainer").append(`
+    <form>
+    <div class="form-group">
+      <label for="inputUser">User Name</label>
+      <input class="form-control" id="inputUser" aria-describedby="disclaimerInputUser" placeholder="Enter Your Name!">
+      <small id="disclaimerInputUser" class="form-text text-muted">Your name will be registered for Hall of Fame!.</small>
+    </div><button type="submit" class="btn btn-default">Submit</button>
+    </form>`);
   }) ;
 
 }
@@ -251,3 +258,11 @@ $(function(){
 animate();
 });
 
+
+fetchBtn.addEventListener('click', async () => {
+  const response = await fetch('/.netlify/functions/hello-world')
+		.then(response => response.json()
+	)
+
+  responseText.innerText = response
+})

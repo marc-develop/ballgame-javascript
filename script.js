@@ -243,7 +243,7 @@ function animate() {
   if(bal.length == 0){
     displayMessage("You have popped 'em all!");
     cancelAnimationFrame(animationID); 
-    setTimeout(displayForm, 2500);
+    setTimeout(displayForm, 1500);
 
   }
 }

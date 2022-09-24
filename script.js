@@ -198,12 +198,15 @@ function displayMessage(message){
 function displayForm() {
   $("#bigtextcontainer").fadeOut("slow", function(){
     $("#messagecontainer").append(`
-    <form>
+    <form>   
     <div class="form-group">
       <label for="inputUser">User Name</label>
       <input class="form-control" id="inputUser" aria-describedby="disclaimerInputUser" placeholder="Enter Your Name!">
       <small id="disclaimerInputUser" class="form-text text-muted">Your name will be registered for Hall of Fame!.</small>
-    </div><button type="submit" class="btn btn-default">Submit</button>
+    </div>
+    <div class="col-md-12 text-center">
+    <button type="submit" class="btn btn-default">Submit</button>
+    </div>
     </form>`);
   }) ;
 

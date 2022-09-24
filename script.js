@@ -208,6 +208,7 @@ function displayForm() {
     </form>`);
     $('#btnInputUser').click(async () => {
       const formInput = $('#inputUser').val();
+      console.log(formInput);
       const responseJSON = await postUserName(formInput).then(response => response.json());
       console.log(JSON.stringify(responseJSON));
     });

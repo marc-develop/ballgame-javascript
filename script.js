@@ -1,6 +1,4 @@
-console.log("Hello World");
-
-
+console.log("script.js executed");
 
 var canvas = document.getElementById("canvas");
 var c = canvas.getContext("2d");
@@ -92,16 +90,16 @@ class Ball {
   }
 
   calculate() {
-    if( this.dy > speedLimit ) {
+    if (this.dy > speedLimit) {
       this.dy = speedLimit;
     }
-    if( this.dy < -speedLimit ) {
+    if (this.dy < -speedLimit) {
       this.dy = -speedLimit;
     }
-    if( this.dx > speedLimit ) {
+    if (this.dx > speedLimit) {
       this.dx = speedLimit;
     }
-    if( this.dx < -speedLimit ) {
+    if (this.dx < -speedLimit) {
       this.dx = -speedLimit;
     }
     this.y += this.dy;
@@ -121,7 +119,7 @@ class Ball {
   }
 
   update() {
-    if ( this.radius < minBallSize && this.alphaDecrease == 0){
+    if (this.radius < minBallSize && this.alphaDecrease == 0) {
       this.radius = minBallSize;
     }
     c.save();
@@ -147,34 +145,34 @@ function getRandomBall() {
   return new Ball(color, radius, x, y, dy, dx, vel, 0);
 }
 
-function getSplitBalls(parentBall, numOfNewBalls ) {
+function getSplitBalls(parentBall, numOfNewBalls) {
   var splitBalls = [];
   var directionInd = 1;
   for (let i = 0; i < numOfNewBalls; i++) {
-    if ( i % 2 == 0 ){
+    if (i % 2 == 0) {
       directionInd = 1
-    }else{
+    } else {
       directionInd = -1
     }
     var color = randomColor();
     var radius = parentBall.radius * radiusReduceFactor;
-    if ( radius < minBallSize ) {
+    if (radius < minBallSize) {
       radius = minBallSize;
     }
-    var x = parentBall.x + parentBall.radius * getRandomInt(0.5, 1) * directionInd ;
-    var y = parentBall.y + parentBall.radius * getRandomInt(0.5, 1) * directionInd ;
-    var dy = parentBall.dy * speedIncrFactor * getRandomInt(0.5 , 1) * directionInd ;
-    var dx = parentBall.dx * speedIncrFactor * getRandomInt(0.5 , 1) * directionInd ;
+    var x = parentBall.x + parentBall.radius * getRandomInt(0.5, 1) * directionInd;
+    var y = parentBall.y + parentBall.radius * getRandomInt(0.5, 1) * directionInd;
+    var dy = parentBall.dy * speedIncrFactor * getRandomInt(0.5, 1) * directionInd;
+    var dx = parentBall.dx * speedIncrFactor * getRandomInt(0.5, 1) * directionInd;
     var vel = parentBall.vel;
     splitBalls.push(new Ball(color, radius, x, y, dy, dx, vel, 0));
   }
   return splitBalls;
 }
 
-function getParticles( x, y ) {
+function getParticles(x, y) {
   var particles = [];
   for (let i = 0; i < numOfParticles; i++) {
-    
+
     var color = randomColor();
     var radius = particlesRadius;
     let dx = (Math.random() - 0.5) * (Math.random() * 6);
@@ -185,18 +183,18 @@ function getParticles( x, y ) {
   return particles;
 }
 
-function displayMessage(message){
-  
+function displayMessage(message) {
+
   $("#canvaswrapper").remove();
-  $("#messagecontainer").fadeIn("slow" , function(){
+  $("#messagecontainer").fadeIn("slow", function () {
     $("#messagecontainer").css('display', 'flex');
-    $("#bigtextcontainer").text(message) ;
+    $("#bigtextcontainer").text(message);
   });
 
 }
 
 function displayForm() {
-  $("#bigtextcontainer").fadeOut("slow", function(){
+  $("#bigtextcontainer").fadeOut("slow", function () {
     $("#messagecontainer").append(`
     <form>   
     <div class="form-group">
@@ -205,12 +203,32 @@ function displayForm() {
       <small id="disclaimerInputUser" class="form-text text-muted">Your name will be registered for Hall of Fame!.</small>
     </div>
     <div class="col-md-12 text-center">
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" id= "btnInputUser" class="btn btn-default">Submit</button>
     </div>
     </form>`);
-  }) ;
+    $('#btnInputUser').click(async () => {
+      const formInput = $('#inputUser').val();
+      const responseJSON = await postUserName(formInput).then(response => response.json());
+      console.log(JSON.stringify(responseJSON));
+    });
+  })
+};
 
-}
+async function postUserName(name) {
+  try {
+    const response = await fetch('/.netlify/functions-serve/handle-form', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: "name" }) // body data type must match "Content-Type" header
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(response);
+  return response;
+};
 
 
 function animate() {
@@ -225,27 +243,27 @@ function animate() {
   for (var i = 0; i < bal.length; i++) {
     if (bal[i].alpha <= 0) {
       bal.splice(i, 1);
-  } 
-      bal[i].update();
+    }
+    bal[i].update();
     bal[i].calculate();
-    if ( bal[i].isHit(clickx, clicky) && bal[i].alphaDecrease == 0  ) {
-      if( bal[i].radius ==  minBallSize  ){
-         var explosionParticles = getParticles( bal[i].x, bal[i].y );
-         bal = bal.concat(explosionParticles);
-         bal.splice(i,1);
-      }   
-      else{
+    if (bal[i].isHit(clickx, clicky) && bal[i].alphaDecrease == 0) {
+      if (bal[i].radius == minBallSize) {
+        var explosionParticles = getParticles(bal[i].x, bal[i].y);
+        bal = bal.concat(explosionParticles);
+        bal.splice(i, 1);
+      }
+      else {
         var newBalls = getSplitBalls(bal[i], numOfSplitBalls);
         bal = bal.concat(newBalls);
-        bal.splice(i,1);
+        bal.splice(i, 1);
       }
       clickx = 0;
       clicky = 0;
     }
   }
-  if(bal.length == 0){
+  if (bal.length == 0) {
     displayMessage("You have popped 'em all!");
-    cancelAnimationFrame(animationID); 
+    cancelAnimationFrame(animationID);
     setTimeout(displayForm, 1500);
 
   }
@@ -257,15 +275,11 @@ for (var i = 0; i < numOfBalls; i++) {
 }
 
 
-$(function(){
-animate();
+$(function () {
+  animate();
 });
 
 
-fetchBtn.addEventListener('click', async () => {
-  const response = await fetch('/.netlify/functions/hello-world')
-		.then(response => response.json()
-	)
 
-  responseText.innerText = response
-})
+
+

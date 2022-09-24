@@ -2,9 +2,6 @@
      base = ""
      publish = ""
 
-[[ redirects ]]
-    from = '/add-name'
-    to = '/.netlify/functions/handle-form'
-    status = 200
 [functions]
   node_bundler = "esbuild"
+  functions = "netlify/functions"

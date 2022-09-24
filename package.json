@@ -1,6 +1,7 @@
 {
     "type": "module",
     "devDependencies": {
+        "netlify-cli": "^11.8.3",
         "node-fetch": "^3.2.10"
     },
     "dependencies": {

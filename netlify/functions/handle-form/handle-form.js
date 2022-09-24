@@ -9,6 +9,7 @@ const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 export async function handler(event, context) {
+  console.log(event);
   // Only allow POST
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
@@ -22,11 +23,11 @@ export async function handler(event, context) {
 
   try{
    const {data, error} = await supabase.from("WinnerNames")
-              .insert({ user_data: name})
+              .insert({ user_data: userName})
 
   }catch(error){
 return {
-  statusCode: 200,
+  statusCode: 400,
   body: error
 }
   

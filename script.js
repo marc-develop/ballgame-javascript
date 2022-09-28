@@ -222,7 +222,7 @@ async function postUserName(name) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ name: "name" }) // body data type must match "Content-Type" header
+      body: JSON.stringify({ name: name }) // body data type must match "Content-Type" header
     });
   } catch (error) {
     console.log(error);

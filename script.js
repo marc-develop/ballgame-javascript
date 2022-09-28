@@ -209,20 +209,21 @@ function displayForm() {
     $('#btnInputUser').click(async () => {
       const formInput = $('#inputUser').val();
       console.log(formInput);
-      const responseJSON = await postUserName(formInput).then(response => response.json());
+      const responseJSON = await postUserData(formInput).then(response => response.json());
       console.log(JSON.stringify(responseJSON));
     });
   })
 };
 
-async function postUserName(name) {
+async function postUserData(name) {
   try {
+    const ip = await fetch('https://api.ipify.org/').then(response => response.text());
     const response = await fetch('/.netlify/functions/handle-form', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ name: name }) // body data type must match "Content-Type" header
+      body: JSON.stringify({ name: name, ip: ip }) // body data type must match "Content-Type" header
     });
   } catch (error) {
     console.log(error);

@@ -1,8 +1,4 @@
-import { parse } from "querystring";
-import fetch from 'node-fetch';
 import { createClient } from '@supabase/supabase-js';
-
-
 
 const supabaseUrl = process.env.SUPABASE_URL
 const supabaseKey = process.env.SUPABASE_KEY
@@ -15,7 +11,7 @@ export async function handler(event, context) {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  const params = Json.parse(event.body);
+  const params = JSON.parse(event.body);
   console.log(params);
   const userName = params.name;
 

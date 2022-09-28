@@ -15,10 +15,9 @@ export async function handler(event, context) {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  const params = parse(event.body);
-  const { name } = params
+  const params = Json.parse(event.body);
   console.log(params);
-  const userName = { name };
+  const userName = params.name;
 
 
   try{
@@ -36,7 +35,7 @@ return {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      userName 
+      name: userName 
     })
   }
 }

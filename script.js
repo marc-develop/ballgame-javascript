@@ -217,7 +217,7 @@ function displayForm() {
 
 async function postUserName(name) {
   try {
-    const response = await fetch('/.netlify/functions-serve/handle-form', {
+    const response = await fetch('/.netlify/functions/handle-form', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

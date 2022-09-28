@@ -13,12 +13,11 @@ export async function handler(event, context) {
 
   const params = JSON.parse(event.body);
   console.log(params);
-  const userName = params.name;
 
 
   try{
    const {data, error} = await supabase.from("WinnerNames")
-              .insert({ user_data: userName})
+              .insert({ user_data: params})
 
   }catch(error){
 return {

@@ -203,7 +203,7 @@ function displayForm() {
       <small id="disclaimerInputUser" class="form-text text-muted">Your name will be registered for Hall of Fame!.</small>
     </div>
     <div class="col-md-12 text-center">
-    <button type="submit" id= "btnInputUser" class="btn btn-default">Submit</button>
+    <button type="button" id= "btnInputUser" class="btn btn-default">Submit</button>
     </div>
     </form>`);
     $('#btnInputUser').click(async () => {

@@ -29,8 +29,6 @@ return {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({
-      name: userName 
-    })
+    body: JSON.stringify(params)
   }
 }

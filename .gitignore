@@ -3,4 +3,4 @@
 # Node Modules
 node_modules
 #Test API
-test.http
+*.http

@@ -11,7 +11,7 @@
     top: 50%;
     left: 50%;
     overflow: hidden;
-    border: 10px solid #2f65a1;
+    border: 0px solid #2f65a1;
     border-radius: 8px;
     box-shadow: -1px 5px 15px black;
 }
@@ -25,38 +25,18 @@
 #canvas{
     width: 100%;
 }
-
-#messagecontainer{
-    position: absolute;
-    top: 30%;
-    left: 30%;
-    height: 40%;
-    width: 40%;
-    border: 10px solid #1c1d1f;
-    align-items:center;
-    justify-content:center;
-    display: none;
-
-}
+ 
 
 #bigtextcontainer{
     position: absolute;
-    top: 30%;
-    left: 30%;
-    height: 40%;
-    width: 40%;
-    border: 10px solid #1c1d1f;
-    font-size: 1vw;
+    top: 5%;
+    left: 5%;
+    height: 90%;
+    width: 90%;
+    border: 0px solid #1c1d1f;
+    font-size: 5vw;
     align-items:center;
     justify-content:center;
-    display: flex;
+    display: none;
     /* transform: translate(-50 , -50); */
-}
-
-
-#winnerform{
-
-
-
-
 }

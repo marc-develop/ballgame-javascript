@@ -184,18 +184,15 @@ function getParticles(x, y) {
 }
 
 function displayMessage(message) {
-
-  $("#canvaswrapper").remove();
-  $("#messagecontainer").fadeIn("slow", function () {
-    $("#messagecontainer").css('display', 'flex');
-    $("#bigtextcontainer").text(message);
-  });
-
+  $("#winnerMessage").text(message);
+  $("#bigtextcontainer").fadeIn("slow");
+  $("#bigtextcontainer").css('display', 'flex');
 }
 
 function displayForm() {
-  $("#bigtextcontainer").fadeOut("slow", function () {
-    $("#messagecontainer").append(`
+  $("#winnerMessage").fadeOut("slow", function () {
+    //**change type to button to avoid reload of page**//
+    $("#bigtextcontainer").append(`
     <form>   
     <div class="form-group">
       <label for="inputUser">User Name</label>
@@ -203,7 +200,7 @@ function displayForm() {
       <small id="disclaimerInputUser" class="form-text text-muted">Your name will be registered for Hall of Fame!.</small>
     </div>
     <div class="col-md-12 text-center">
-    <button type="button" id= "btnInputUser" class="btn btn-default">Submit</button>
+    <button type="submit" id= "btnInputUser" class="btn btn-default">Submit</button>
     </div>
     </form>`);
     $('#btnInputUser').click(async () => {
@@ -223,7 +220,7 @@ async function postUserData(name) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ name: name, ip: ip }) // body data type must match "Content-Type" header
+      body: JSON.stringify({ name: name, ip: ip }) 
     });
   } catch (error) {
     console.log(error);
@@ -245,6 +242,9 @@ function animate() {
   for (var i = 0; i < bal.length; i++) {
     if (bal[i].alpha <= 0) {
       bal.splice(i, 1);
+      clickx = 0;
+      clicky = 0;
+      continue;
     }
     bal[i].update();
     bal[i].calculate();
@@ -253,17 +253,23 @@ function animate() {
         var explosionParticles = getParticles(bal[i].x, bal[i].y);
         bal = bal.concat(explosionParticles);
         bal.splice(i, 1);
+        clickx = 0;
+        clicky = 0;
+        continue;
       }
       else {
         var newBalls = getSplitBalls(bal[i], numOfSplitBalls);
         bal = bal.concat(newBalls);
         bal.splice(i, 1);
+        clickx = 0;
+        clicky = 0;
+        continue;
       }
-      clickx = 0;
-      clicky = 0;
+
     }
   }
   if (bal.length == 0) {
+    $("#canvaswrapper").remove();
     displayMessage("You have popped 'em all!");
     cancelAnimationFrame(animationID);
     setTimeout(displayForm, 1500);

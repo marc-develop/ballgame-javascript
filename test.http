@@ -1,9 +1,0 @@
-@baseUrl = http://localhost:50008
-
-// create todo item
-POST  {{baseUrl}}/api/handle-form
-content-type: application/json
-
-{
-    "name": "Test",
-}
